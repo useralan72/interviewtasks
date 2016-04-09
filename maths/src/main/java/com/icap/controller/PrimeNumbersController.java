@@ -1,10 +1,9 @@
 package com.icap.controller;
 
+import com.icap.model.PrimeNumbersDTO;
 import com.icap.service.PrimeNumber;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
@@ -17,9 +16,20 @@ public class PrimeNumbersController {
     @Autowired
     protected PrimeNumber simplePrimeNumber;
 
-    @RequestMapping(name = "/simplePrimeNoGenerator", method = RequestMethod.GET)
-    public Set<Integer> getAll() {
-        return simplePrimeNumber.generatePrimeNumbers(100);
+    @RequestMapping(name = "/simplePrimeNoGenerator/{limit}", method = RequestMethod.GET)
+    @ResponseBody
+    public PrimeNumbersDTO getAll(@PathVariable("limit") Long limit) {
+        long startTime = System.currentTimeMillis();
+        Set<Integer> allPrimes = simplePrimeNumber.generatePrimeNumbers(limit);
+        long finishTime = System.currentTimeMillis();
+        return generateDTO(allPrimes, finishTime - startTime);
+    }
+
+    private PrimeNumbersDTO generateDTO(Set<Integer> primeNos, long totalTime) {
+        PrimeNumbersDTO primeNumbersDTO = new PrimeNumbersDTO();
+        primeNumbersDTO.setPrimeNumbers(primeNos);
+        primeNumbersDTO.setNoOfPrimeNumbers(primeNos.size());
+        return primeNumbersDTO;
     }
 
 }

@@ -28,7 +28,7 @@ public class SimplePrimeNumberTest {
     @Test
     public void givenLimitOf100ShouldHaveAllPrimeNumbers() {
         //GIVEN
-        int limit = 100;
+        Long limit = new Long("100");
 
         //WHEN
         Set<Integer> primeNos = primeNumber.generatePrimeNumbers(limit);
@@ -36,6 +36,6 @@ public class SimplePrimeNumberTest {
 
         //THEN
         assertNotNull(primeNosOrdered);
-        primeNos.forEach(System.out::println);
+        primeNosOrdered.forEach(item->logger.debug(item.toString()));
     }
 }

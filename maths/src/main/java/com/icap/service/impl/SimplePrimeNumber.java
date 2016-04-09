@@ -9,7 +9,10 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Created by admin on 09/04/2016.
+ *  Loop through all numbers to the given limit.
+    For each one of the numbers in the loop create a boolean isPrimeNumber equal to true
+    and create another loop where the number is divided to other numbers from 2 up to the number,
+    and if the result is zero, then the boolean isPrimeNumber is set to false.
  */
 @Service
 public class SimplePrimeNumber implements PrimeNumber{
@@ -17,7 +20,7 @@ public class SimplePrimeNumber implements PrimeNumber{
     Set<Integer> allPrimes = new HashSet<>();
 
     @Override
-    public Set<Integer> generatePrimeNumbers(int limit) {
+    public Set<Integer> generatePrimeNumbers(Long limit) {
         for (int i = 0; i < limit; i++) {
            if (isPrime(i)) {
               allPrimes.add(i);

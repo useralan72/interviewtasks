@@ -7,5 +7,5 @@ import java.util.Set;
  */
 public interface PrimeNumber {
 
-    Set<Integer> generatePrimeNumbers(int limit);
+    Set<Integer> generatePrimeNumbers(Long limit);
 }

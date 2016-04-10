@@ -12,6 +12,7 @@ import java.util.Set;
  * Created by admin on 09/04/2016.
  */
 @RestController
+@RequestMapping(value = "/primeNumbers", method = RequestMethod.GET)
 public class PrimeNumbersController {
 
     @Autowired
@@ -19,10 +20,14 @@ public class PrimeNumbersController {
     protected PrimeNumberService simplePrimeNumberService;
 
     @Autowired
+    @Qualifier("threadedSimpleLoopingPrimeNumberService")
+    protected PrimeNumberService threadedSimpleLoopingPrimeNumberService;
+
+    @Autowired
     @Qualifier("sievePrimeNumberService")
     protected PrimeNumberService sievePrimeNumberService;
 
-    @RequestMapping(value = "/simpleLoopingPrimeNoGenerator/{limit}", method = RequestMethod.GET)
+    @RequestMapping(value = "/simpleLoopingAlgorithm/{limit}", method = RequestMethod.GET)
     @ResponseBody
     public PrimeNumbersDTO getAllSimpleLoop(@PathVariable("limit") Integer limit) {
         long startTime = System.currentTimeMillis();
@@ -31,7 +36,16 @@ public class PrimeNumbersController {
         return generateDTO(allPrimes, finishTime - startTime);
     }
 
-    @RequestMapping(value = "/sievePrimeNoGenerator/{limit}", method = RequestMethod.GET)
+    @RequestMapping(value = "/threadedSimpleLoopingAlgorithm/{limit}", method = RequestMethod.GET)
+    @ResponseBody
+    public PrimeNumbersDTO getAllMultithreadedSimpleLoop(@PathVariable("limit") Integer limit) {
+        long startTime = System.currentTimeMillis();
+        Set<Integer> allPrimes = threadedSimpleLoopingPrimeNumberService.generatePrimeNumbers(limit);
+        long finishTime = System.currentTimeMillis();
+        return generateDTO(allPrimes, finishTime - startTime);
+    }
+
+    @RequestMapping(value = "/sieveAlgorithm/{limit}", method = RequestMethod.GET)
     @ResponseBody
     public PrimeNumbersDTO getAllSieveAlgorithm(@PathVariable("limit") Integer limit) {
         long startTime = System.currentTimeMillis();

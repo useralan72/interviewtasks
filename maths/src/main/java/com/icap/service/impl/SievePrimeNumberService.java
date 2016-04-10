@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by admin on 09/04/2016.
@@ -17,6 +18,9 @@ public class SievePrimeNumberService implements PrimeNumberService {
 
     @Override
     public Set<Integer> generatePrimeNumbers(Integer limit) {
+        if (limit <= 1) {
+            return new HashSet<Integer>(0);
+        }
         sieve = new BitSet((int)(limit+1)/2);
         for (int i = 3; i * i <= limit; i += 2) {
             if (is_composite(i))
@@ -33,7 +37,8 @@ public class SievePrimeNumberService implements PrimeNumberService {
             if (!is_composite(i))
                 primes.add(i);
 
-        return primes;
+        TreeSet<Integer> primeNosOrdered = new TreeSet<>(primes);
+        return primeNosOrdered;
     }
 
     private boolean is_composite(int k) {

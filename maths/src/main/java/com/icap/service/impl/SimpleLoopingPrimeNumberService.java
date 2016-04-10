@@ -17,15 +17,20 @@ public class SimpleLoopingPrimeNumberService implements PrimeNumberService {
 
     @Override
     public Set<Integer> generatePrimeNumbers(Integer limit) {
-
-        for (int i = 1; i < limit; i++) {
+        //1 is not a prime
+        if (limit <= 1) {
+            return allPrimes;
+        }
+        for (int i = 2; i <= limit; i++) {
             boolean isPrimeNumber = true;
             // check to see if the number is prime
-            for (int j = 2; j < i; j++)
+            for (int j = 2; j < i; j++) {
                 if (i % j == 0) {
                     isPrimeNumber = false;
                     break; // exit the inner for loop
                 }
+            }
+
             if (isPrimeNumber) {
                 allPrimes.add(i);
             }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**

@@ -4,14 +4,21 @@ import com.icap.model.PrimeNumbersDTO;
 import com.icap.service.PrimeNumberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 /**
  * Created by admin on 09/04/2016.
  */
 @RestController
+@Validated
 @RequestMapping(value = "/primeNumbers", method = RequestMethod.GET)
 public class PrimeNumbersController {
 
@@ -29,7 +36,7 @@ public class PrimeNumbersController {
 
     @RequestMapping(value = "/simpleLoopingAlgorithm/{limit}", method = RequestMethod.GET)
     @ResponseBody
-    public PrimeNumbersDTO getAllSimpleLoop(@PathVariable("limit") Integer limit) {
+    public PrimeNumbersDTO getAllSimpleLoop(@Max(100) @PathVariable("limit") Integer limit) {
         long startTime = System.currentTimeMillis();
         Set<Integer> allPrimes = simpleLoopingPrimeNumberService.generatePrimeNumbers(limit);
         long finishTime = System.currentTimeMillis();
@@ -59,6 +66,17 @@ public class PrimeNumbersController {
         primeNumbersDTO.setPrimeNumbers(primeNos);
         primeNumbersDTO.setNoOfPrimeNumbers(primeNos.size());
         return primeNumbersDTO;
+    }
+
+    @ExceptionHandler(value = { ConstraintViolationException.class })
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public String handleResourceNotFoundException(ConstraintViolationException e) {
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        StringBuilder strBuilder = new StringBuilder();
+        for (ConstraintViolation<?> violation : violations ) {
+            strBuilder.append(violation.getMessage() + "\n");
+        }
+        return strBuilder.toString();
     }
 
 }

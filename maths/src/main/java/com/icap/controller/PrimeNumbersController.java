@@ -16,8 +16,8 @@ import java.util.Set;
 public class PrimeNumbersController {
 
     @Autowired
-    @Qualifier("simplePrimeNumberService")
-    protected PrimeNumberService simplePrimeNumberService;
+    @Qualifier("simpleLoopingPrimeNumberService")
+    protected PrimeNumberService simpleLoopingPrimeNumberService;
 
     @Autowired
     @Qualifier("threadedSimpleLoopingPrimeNumberService")
@@ -31,7 +31,7 @@ public class PrimeNumbersController {
     @ResponseBody
     public PrimeNumbersDTO getAllSimpleLoop(@PathVariable("limit") Integer limit) {
         long startTime = System.currentTimeMillis();
-        Set<Integer> allPrimes = simplePrimeNumberService.generatePrimeNumbers(limit);
+        Set<Integer> allPrimes = simpleLoopingPrimeNumberService.generatePrimeNumbers(limit);
         long finishTime = System.currentTimeMillis();
         return generateDTO(allPrimes, finishTime - startTime);
     }
